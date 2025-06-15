@@ -1,7 +1,7 @@
 from django.contrib import admin
-from .models import post
+from .models import Post
 # Register your models here.
-@admin.register(post)
+@admin.register(Post)
 class PostAdmin(admin.ModelAdmin):
     list_display = (
         'title',
