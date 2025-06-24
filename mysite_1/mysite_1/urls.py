@@ -16,8 +16,10 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path, include
+from blog.views import post_list  # وارد کردن تابع view
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('blog/',include('blog.urls',namespace='blog')),
+    path('', post_list, name='post_list'),  # اضافه کردن این خط
+    path('blog/', include('blog.urls', namespace='blog')),
 ]

@@ -11,11 +11,12 @@ My Blog
             {{ post.title }}
         </a>
     </h2>
-    <P class="date">
+    <p class="date">
         Published{{ post.published}} by {{ post.author }}
-    </P>
+    </p>
     <p>
         {{post.body|truncatewords:30|linebreaks}}
     </p>
 {% endfor %}
+{% include "pagination.html" with page=posts %}
 {% endblock %}
