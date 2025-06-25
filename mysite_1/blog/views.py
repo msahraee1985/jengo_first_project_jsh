@@ -1,9 +1,10 @@
 from django.shortcuts import render,get_object_or_404
-from .models import Post
+from .models import Post, comment
 from django.http import Http404 
 from django.core.paginator import Paginator,EmptyPage,PageNotAnInteger
-from .forms import EmailPostForm
+from .forms import EmailPostForm, CommentForm
 from django.core.mail import send_mail
+from django.views.decorators.http import require_POST
 # Create your views here.
 def post_list(request):
     posts = Post.pub.all()
@@ -80,3 +81,26 @@ def post_share(request, post_id):
         }
 
     )
+
+@require_POST
+def post_comment(request, post_id):
+    post = get_object_or_404(
+        Post,
+        id=post_id,
+        status=Post.Status.PUBLISHED,
+    )
+    comment = None
+    form = CommentForm(request.POST)
+    if form.is_valid():
+        comment = form.save(commit=False)
+        comment.post = post
+        comment.save()
+    return render(
+        request,
+        'blog/post/comment.html',
+        {
+            'form':form,
+            'post':post,
+            'comment':comment,
+        }
+    )    
