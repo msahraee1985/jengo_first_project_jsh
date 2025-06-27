@@ -4,11 +4,17 @@ from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from .forms import EmailPostForm, CommentForm
 from django.core.mail import send_mail
 from django.views.decorators.http import require_POST
+from taggit.models import Tag
 
-
-def post_list(request):
+def post_list(request, tag_slug=None):
     posts = Post.pub.all()
-
+    tag = None
+    if tag_slug:
+        tag = get_object_or_404(
+            Tag,
+            slug=tag_slug,
+        )
+        posts = posts.filter(tags__in=[tag])
     paginator = Paginator(posts, 2)
     page_number = request.GET.get("page", 1)
     try:
@@ -23,6 +29,7 @@ def post_list(request):
         'blog/post/list.html',
         {
             "posts": posts,
+            'tag':tag,
         }
     )
 
