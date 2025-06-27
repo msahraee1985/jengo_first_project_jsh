@@ -15,5 +15,27 @@
     <a href="{% url 'blog:post_share' post.id %}">
         Share this post 
     </a>
-</div>   
+</div>  
+<div>
+    {% with comments.count as total_comments %}
+    <h2>
+        {{ total_comments}} comment {{ total_comments|pluralize}}
+    </h2>
+    {% endwith %} 
+    {% for comment in comments  %}
+        <div class="comment">
+            <p class="info">
+                comment by {{comment.name}} at {{comment.created}}
+            </p>
+            <p>
+                {{comment.body|linebreaks}}
+            </p>
+        </div>
+    {% empty %}
+        <p>
+            there are no comment. 
+        </p>
+    {% endfor %}
+    {% include "blog/post/includes/comment_form.html" %}
+</div>
 {% endblock content %}
