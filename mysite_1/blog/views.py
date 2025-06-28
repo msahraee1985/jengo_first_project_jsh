@@ -1,11 +1,11 @@
 from django.shortcuts import render, get_object_or_404
-from .models import Post, comment
+from .models import Post, Comment
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from .forms import EmailPostForm, CommentForm
 from django.core.mail import send_mail
 from django.views.decorators.http import require_POST
 from taggit.models import Tag
-
+from django.db.models import Count
 def post_list(request, tag_slug=None):
     posts = Post.pub.all()
     tag = None
@@ -46,7 +46,18 @@ def post_detail(request, year, month, day, slug):
 
     comments = post.comments.filter(active=True)
 
+
+
     form = CommentForm()
+
+    post_tag_ids = post.tags.values_list('id', flat=True)
+    similar_posts = Post.pub.filter(
+        tags__in=post_tag_ids
+    ).exclude(id=post.id)
+    similar_posts = similar_posts.annotate(
+        same_tags=Count('tags')
+    ).order_by('-same_tags','-published')[:3]
+
 
     return render(
         request,
@@ -55,6 +66,7 @@ def post_detail(request, year, month, day, slug):
             'post': post,
             'comments': comments,
             'form': form,
+            'similar_posts':similar_posts,
         }
     )
 
