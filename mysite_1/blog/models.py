@@ -74,7 +74,7 @@ class Post(models.Model):
         return self.title
     
     
-class comment(models.Model):
+class Comment(models.Model):
     post = models.ForeignKey(
         Post,
         on_delete=models.CASCADE,
@@ -95,5 +95,6 @@ class comment(models.Model):
         indexes = [
             models.Index(fields=['-created']),
         ]
-        def __str__(self):
-            return f'comment by {self.name} on {self.post}'
+
+    def __str__(self):
+        return f'comment by {self.name} on {self.post}'

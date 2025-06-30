@@ -1,5 +1,5 @@
 from django import forms
-from .models import comment
+from .models import Comment
 
 class EmailPostForm(forms.Form):
     name = forms.CharField(
@@ -13,7 +13,7 @@ class EmailPostForm(forms.Form):
 
 class CommentForm(forms.ModelForm):
     class Meta:
-        model = comment
+        model = Comment
         fields = [
             'name',
             'email',
