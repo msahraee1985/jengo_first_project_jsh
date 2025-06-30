@@ -9,17 +9,22 @@
         </title>
         <link href="{% static 'css/blog.css'%}" rel="stylesheet"/>
     </head>
-</html>
-<body>
-    <div id="content">
-        {% block content %}
-        {% endblock %}
-    </div>
-    <div id="sidebar">
-        <h2>My Blog</h2>
-        <p>This is my blog!</p>
-        <p>
-            Total Posts So Far: {% total_posts %}
-        </p>
-</body>
+
+    <body>
+        <div id="content">
+            {% block content %}
+            {% endblock %}
+        </div>
+        <div id="sidebar">
+            <h2>My Blog</h2>
+                <p>This is my blog!</p>
+            <p>
+                Total Posts So Far: {% total_posts %}
+            </p>
+            <div>
+                <h3> Latest Posts</h3>
+                {% show_latest_posts 3 %}
+            </div>
+        </div>
+    </body>
 </html>
