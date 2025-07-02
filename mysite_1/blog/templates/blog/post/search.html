@@ -1,0 +1,29 @@
+{% extends "blog/base.html" %}
+{% block title %}
+    Serch
+{% endblock title %}
+
+{% block content %}
+    <h1>Serch for Posts</h1>
+    <form method="get">
+        {{form.as_div}}
+        <input type="submit"  value="Search"/>    
+    </form>
+    <h3>
+        {% with result.count as total_results %}
+        Found {{total_results}} result {{total_results|pluralize}}
+        {% endwith %}
+    </h3>
+    <div>
+    {% for post in results %}
+        <p>
+            <a href="{{ post.get_absolute_url }}">
+                {{ post.title }}
+            </a>
+        </p>
+    {% empty %}
+        <p>There is no result for your query</p>
+    {% endfor %}
+</div>
+
+{% endblock content %}
